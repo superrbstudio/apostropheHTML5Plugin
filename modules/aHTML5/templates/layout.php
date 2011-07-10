@@ -50,6 +50,7 @@
 <?php $a_bodyclass .= ($page && $page->archived) ? ' a-page-unpublished' : '' ?> 
 <?php $a_bodyclass .= ($page && $page->view_is_secure) ? ' a-page-secure' : '' ?> 
 <?php $a_bodyclass .= (sfConfig::get('app_a_js_debug', false)) ? ' js-debug':'' ?>
+<?php $a_bodyclass .= ($realPage && !is_null($realPage['engine'])) ? ' a-engine':'' ?>
 
 <?php // a-body-class allows you to set a class for the body element from a template ?>
 <?php // body_class is preserved here for backwards compatibility ?>
