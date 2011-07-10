@@ -42,12 +42,19 @@
 	<!--[if lte IE 7]>
 		<link rel="stylesheet" type="text/css" href="/apostrophePlugin/css/a-ie.css" />
 	<![endif]-->
+	
 </head>
+
+<?php $a_bodyclass = '' ?>
+<?php $a_bodyclass .= ($sf_user->isAuthenticated()) ? ' logged-in':' logged-out' ?> 
+<?php $a_bodyclass .= ($page && $page->archived) ? ' a-page-unpublished' : '' ?> 
+<?php $a_bodyclass .= ($page && $page->view_is_secure) ? ' a-page-secure' : '' ?> 
+<?php $a_bodyclass .= (sfConfig::get('app_a_js_debug', false)) ? ' js-debug':'' ?>
 
 <?php // a-body-class allows you to set a class for the body element from a template ?>
 <?php // body_class is preserved here for backwards compatibility ?>
+<body class="<?php if (has_slot('a-body-class')): ?> <?php include_slot('a-body-class') ?><?php endif ?><?php if (has_slot('body_class')): ?> <?php include_slot('body_class') ?><?php endif ?><?php echo $a_bodyclass ?>">
 
-<body class="<?php if (has_slot('a-body-class')): ?> <?php include_slot('a-body-class') ?><?php endif ?><?php if (has_slot('body_class')): ?> <?php include_slot('body_class') ?><?php endif ?><?php echo ($sf_user->isAuthenticated()) ? ' logged-in':' logged-out' ?><?php echo (sfConfig::get('app_a_js_debug', false)) ? ' js-debug':'' ?><?php if ($realPage && !is_null($realPage['engine'])): ?> a-engine<?php endif ?>">
 	<?php include_partial('a/doNotEdit') ?>
   <?php include_partial('a/globalTools') ?>
 
@@ -112,11 +119,15 @@
 
 	</div>
 
-	<div class='a-footer-wrapper clearfix'>
-		<div class='a-footer clearfix'>
-  	  <?php include_partial('a/footer') ?>
+	<?php if (has_slot('a-footer')): ?>
+	  <?php include_slot('a-footer') ?>
+	<?php else: ?>
+		<div class='a-footer-wrapper clearfix'>
+			<div class='a-footer clearfix'>
+	  	  <?php include_partial('a/footer') ?>
+			</div>
 		</div>
-	</div>
+	<?php endif ?>	
 
 	<?php include_partial('a/googleAnalytics') ?>
 
