@@ -32,29 +32,32 @@
 
 	<link rel="shortcut icon" href="/favicon.ico" />
 
-	<!--[if lt IE 7]>
+	<!--[if lt IE 9]>
+  	<link rel="stylesheet" type="text/css" href="/apostrophePlugin/css/a-ie.css" />	
+  	<link rel="stylesheet" type="text/css" href="/css/ie6.css" />		
 		<script type="text/javascript">
 			$(document).ready(function() {
 				apostrophe.IE6({'authenticated':<?php echo ($sf_user->isAuthenticated())? 'true':'false' ?>, 'message':<?php echo json_encode(__('You are using IE6! That is just awful! Apostrophe does not support editing using Internet Explorer 6. Why don\'t you try upgrading? <a href="http://www.getfirefox.com">Firefox</a> <a href="http://www.google.com/chrome">Chrome</a> 	<a href="http://www.apple.com/safari/download/">Safari</a> <a href="http://www.microsoft.com/windows/internet-explorer/worldwide-sites.aspx">IE8</a>', null, 'apostrophe')) ?>});
 			});
 		</script>
 	<![endif]-->
-	<!--[if lte IE 7]>
-		<link rel="stylesheet" type="text/css" href="/apostrophePlugin/css/a-ie.css" />
-	<![endif]-->
 	
 </head>
 
-<?php $a_bodyclass = '' ?>
-<?php $a_bodyclass .= ($sf_user->isAuthenticated()) ? ' logged-in':' logged-out' ?> 
-<?php $a_bodyclass .= ($page && $page->archived) ? ' a-page-unpublished' : '' ?> 
-<?php $a_bodyclass .= ($page && $page->view_is_secure) ? ' a-page-secure' : '' ?> 
-<?php $a_bodyclass .= (sfConfig::get('app_a_js_debug', false)) ? ' js-debug':'' ?>
-<?php $a_bodyclass .= ($realPage && !is_null($realPage['engine'])) ? ' a-engine':'' ?>
-
 <?php // a-body-class allows you to set a class for the body element from a template ?>
 <?php // body_class is preserved here for backwards compatibility ?>
-<body class="<?php if (has_slot('a-body-class')): ?> <?php include_slot('a-body-class') ?><?php endif ?><?php if (has_slot('body_class')): ?> <?php include_slot('body_class') ?><?php endif ?><?php echo $a_bodyclass ?>">
+
+<?php $a_bodyclass = '' ?>
+<?php $a_bodyclass .= (has_slot('a-body-class')) ? get_slot('a-body-class') : '' ?>
+<?php $a_bodyclass .= (has_slot('body_class')) ? get_slot('body_class') : '' ?>
+<?php $a_bodyclass .= ($page && $page->archived) ? ' a-page-unpublished' : '' ?> 
+<?php $a_bodyclass .= ($page && $page->view_is_secure) ? ' a-page-secure' : '' ?> 
+<?php $a_bodyclass .= ($page) ? ' a-page-id-'.$page->id.' a-page-depth-'.$page->level : '' ?>
+<?php $a_bodyclass .= (sfConfig::get('app_a_js_debug', false)) ? ' js-debug':'' ?>
+<?php $a_bodyclass .= ($realPage && !is_null($realPage['engine'])) ? ' a-engine':'' ?>
+<?php $a_bodyclass .= ($sf_user->isAuthenticated()) ? ' logged-in':' logged-out' ?>
+
+<body class="<?php echo $a_bodyclass ?>">
 
 	<?php include_partial('a/doNotEdit') ?>
   <?php include_partial('a/globalTools') ?>

@@ -3,7 +3,6 @@
 Overview
 
 The Apostrophe HTML5 Plugin leverages a paired down version of the HTML5 Boilerplate (http://html5boilerplate.com/)
-It includes the latest jquery via Google Code so there is no need to supply your own
 It includes a copy of modernizr
 It includes some CSS from the HTML5 Boilerplate
 It includes DD_Belated for IE6 24bit PNG support
@@ -13,10 +12,9 @@ Installation
 
 - Enable the plugin in projectConfiguration
 - ./symfony plugin:publish assets
-- Disable the bundled jquery in app.yml
 - Add aHTML5.css to view.yml
 - Add modernizr.js to view.yml
-- Require or copy up modules/a/layout.php into the project layout.php (effectively replacing Apostrophe's built-in layout)
+- Require or copy up apostropheHTML5Plugin/templates/layout.php into the project layout.php (effectively replacing Apostrophe's built-in layout)
 
 Requirements
 
