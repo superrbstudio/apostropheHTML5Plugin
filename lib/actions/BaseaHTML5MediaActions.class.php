@@ -17,12 +17,8 @@ class BaseaHTML5MediaActions extends BaseaMediaActions
       // Handle uploaded file
       $allowedExtensions = array('jpg', 'jpeg', 'gif', 'png');
       $sizeLimit = min(array($this->toBytes(ini_get('post_max_size')), $this->toBytes(ini_get('upload_max_filesize')))) - 1024;      // max file size in bytes
-      $mediaDir = sfConfig::get('sf_upload_dir') . '/html5upload' . time();
+      $mediaDir = sfConfig::get('sf_upload_dir') . '/html5upload' . aGuid::generate();
 
-      while (is_dir($mediaDir))
-      {
-        $mediaDir .= time();
-      }
       mkdir($mediaDir);
       $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
 
@@ -56,6 +52,9 @@ class BaseaHTML5MediaActions extends BaseaMediaActions
 
   /**
    * Must be public to be part of a callable
+   *
+   * NOTE: Copied directly from the task
+   *
    * @param mixed $category
    * @param mixed $message
    * @param mixed $file
