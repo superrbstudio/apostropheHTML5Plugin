@@ -68,6 +68,7 @@ class qqFileUploader {
     private $allowedExtensions = array();
     private $sizeLimit = 10485760;
     private $file;
+    private $acceptedFilename;
 
     function __construct(array $allowedExtensions = array(), $sizeLimit = 10485760){        
         $allowedExtensions = array_map("strtolower", $allowedExtensions);
@@ -149,30 +150,34 @@ class qqFileUploader {
             }
         }
         
-        if ($this->file->save($uploadDirectory . $filename . '.' . $ext)){
+        $acceptedFilename = $uploadDirectory . $filename . '.' . $ext;
+        if ($this->file->save($acceptedFilename)) {
+            error_log("accepted");
+            $this->acceptedFilename = $acceptedFilename;
             return array('success' => true);
         } else {
             return array('error'=> 'Could not save uploaded file.' .
                 'The upload was cancelled, or server error encountered');
         }
-        
     }
 
     /**
-     * Returns name of handled file.
+     * Returns full path to handled file.
      *
-     * False if no file exists.
+     * False if no file has been successfully handled.
      *
      *
      * @return string | FALSE
      */
     public function getFileName()
     {
-      if (!$this->file)
+      error_log("Getting filename");
+      if (!isset($this->acceptedFilename))
       {
         return false;
       }
+      error_log("Returning {$this->acceptedFilename}");
 
-      return $this->file->getName();
+      return $this->acceptedFilename;
     }
 }
