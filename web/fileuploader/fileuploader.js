@@ -266,6 +266,7 @@ qq.FileUploaderBasic = function(o){
         onSubmit: function(id, fileName){},
         onProgress: function(id, fileName, loaded, total){},
         onComplete: function(id, fileName, responseJSON){},
+        onAllComplete: function(){},
         onCancel: function(id, fileName){},
         // messages                
         messages: {
@@ -331,6 +332,9 @@ qq.FileUploaderBasic.prototype = {
             onComplete: function(id, fileName, result){
                 self._onComplete(id, fileName, result);
                 self._options.onComplete(id, fileName, result);
+            },
+            onAllComplete: function(){
+              self._options.onAllComplete();
             },
             onCancel: function(id, fileName){
                 self._onCancel(id, fileName);
@@ -860,6 +864,7 @@ qq.UploadHandlerAbstract = function(o){
         maxConnections: 999,
         onProgress: function(id, fileName, loaded, total){},
         onComplete: function(id, fileName, response){},
+        onAllComplete: function(){},
         onCancel: function(id, fileName){}
     };
     qq.extend(this._options, o);    
@@ -943,6 +948,14 @@ qq.UploadHandlerAbstract.prototype = {
         if (this._queue.length >= max && i < max){
             var nextId = this._queue[max-1];
             this._upload(nextId, this._params[nextId]);
+        }
+        // tom@punkave.com: it really helps UI designers to be
+        // able to show a "Continue" button of some kind when 
+        // the whole job is done and it's reasonable to dismiss
+        // the progress display
+        if (!this._queue.length)
+        {
+          this._options.onAllComplete();
         }
     }        
 };
