@@ -12,6 +12,8 @@ $(document).ready(function() {
   var uploader = new qq.FileUploader({
     element: $('#a-html5-media-uploader')[0],
     action: '<?php echo url_for('aMedia/html5Upload'); ?>',
+    onAllComplete: function() { alert("All done!"); },
+    alwaysShowDropArea: true,
     debug: true
   });
 });
