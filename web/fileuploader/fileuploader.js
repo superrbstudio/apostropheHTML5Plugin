@@ -260,7 +260,8 @@ qq.FileUploaderBasic = function(o){
         // validation        
         allowedExtensions: [],               
         sizeLimit: 0,   
-        minSizeLimit: 0,                             
+        minSizeLimit: 0,         
+        alwaysShowDropArea: false,                    
         // events
         // return false to cancel submit
         onSubmit: function(id, fileName){},
@@ -574,7 +575,7 @@ qq.extend(qq.FileUploader.prototype, {
             }
         });
                 
-        dropArea.style.display = 'none';
+        dropArea.style.display = this._options.alwaysShowDropArea ? 'block' : 'none';
 
         qq.attach(document, 'dragenter', function(e){     
             if (!dz._isValidFileDrag(e)) return; 
