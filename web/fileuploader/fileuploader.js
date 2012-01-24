@@ -271,7 +271,7 @@ qq.FileUploaderBasic = function(o){
         onCancel: function(id, fileName){},
         // messages                
         messages: {
-            typeError: "{file} has invalid extension. Only {extensions} are allowed.",
+            typeError: "{file} has an invalid extension. Only {extensions} are allowed.",
             sizeError: "{file} is too large, maximum file size is {sizeLimit}.",
             minSizeError: "{file} is too small, minimum file size is {minSizeLimit}.",
             emptyError: "{file} is empty, please select files again without it.",
