@@ -588,7 +588,10 @@ qq.extend(qq.FileUploader.prototype, {
             var relatedTarget = document.elementFromPoint(e.clientX, e.clientY);
             // only fire when leaving document out
             if ( ! relatedTarget || relatedTarget.nodeName == "HTML"){               
-                dropArea.style.display = 'none';                                            
+                if (!this._options.alwaysShowDropArea)
+                {
+                  dropArea.style.display = 'none';                                            
+                }
             }
         });                
     },
@@ -743,6 +746,12 @@ qq.UploadDropZone.prototype = {
         });          
     },
     _isValidFileDrag: function(e){
+        // IE flunks this test (for now), preventing an error below if you
+        // try to drag a file in, which IE doesn't really support yet. - tom@punkave.com
+        if (!window.FileReader)
+        {
+          return false;
+        }
         var dt = e.dataTransfer,
             // do not check dt.types.contains in webkit, because it crashes safari 4            
             isWebkit = navigator.userAgent.indexOf("AppleWebKit") > -1;                        
