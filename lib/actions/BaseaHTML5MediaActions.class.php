@@ -32,7 +32,10 @@ class BaseaHTML5MediaActions extends BaseaMediaActions
         $importer = new aMediaImporter(array('dir' => $mediaDir, 'feedback' => array($this, 'importFeedback')));
         $importer->go();
 
-        rmdir($mediaDir);
+        /**
+         * Remove everything including files the media importer turned up its nose at
+         */
+        aFiles::rmRf($mediaDir);
       }
 
       return $this->renderText($result);
