@@ -588,11 +588,12 @@ qq.extend(qq.FileUploader.prototype, {
         });                 
         qq.attach(document, 'dragleave', function(e){
             if (!dz._isValidFileDrag(e)) return;            
-            
             var relatedTarget = document.elementFromPoint(e.clientX, e.clientY);
             // only fire when leaving document out
-            if ( ! relatedTarget || relatedTarget.nodeName == "HTML"){               
-                if (!this._options.alwaysShowDropArea)
+            // Chrome never sends us nodeName HTML, only nodeName BODY. This would be a problem
+            // if we had plain old body space but we never do that, we always have wrapper divs tom@punkave.com
+            if ( ! relatedTarget || relatedTarget.nodeName == "HTML" || relatedTarget.nodeName == "BODY"){               
+                if (!self._options.alwaysShowDropArea)
                 {
                   dropArea.style.display = 'none';                                            
                 }
