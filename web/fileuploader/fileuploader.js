@@ -349,7 +349,8 @@ qq.FileUploaderBasic.prototype = {
         var self = this;
         
         qq.attach(window, 'beforeunload', function(e){
-            if (!self._filesInProgress){return;}
+            // Should never be <0 but I see it happening. tom@punkave.com
+            if (self._filesInProgress <= 0){return;}
             
             var e = e || window.event;
             // for ie, ff
@@ -365,7 +366,10 @@ qq.FileUploaderBasic.prototype = {
     },
     _onComplete: function(id, fileName, result){
         this._filesInProgress--;                 
-        if (result.error){
+        if (result.error) {
+            if (result.stopQueue){
+              this._handler.cancelAll();
+            }
             this._options.showMessage(result.error);
         }             
     },
@@ -921,6 +925,11 @@ qq.UploadHandlerAbstract.prototype = {
         for (var i=0; i<this._queue.length; i++){
             this._cancel(this._queue[i]);
         }
+        // This shouldn't be necessary but we've seen
+        // the "uploads still in progress" warning
+        // even after cancelAll. tom@punkave.com
+        this._filesInProgress = 0;
+        
         this._queue = [];
     },
     /**
